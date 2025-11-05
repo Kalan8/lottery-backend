@@ -40,7 +40,7 @@ The frontend is available at : `https://github.com/Kalan8/frontend-demo`
 ## Features
 
 * Create, read, update, and delete users via REST endpoints.
-* In-memory H2 database for fast development and testing but works also with My SQL database. Dependency commented in pom.xml.
+* In-memory H2 database for fast development and testing but works also with My SQL database. Dependency commented in pom.xml and configurations commented in application.properties
 * JUnit and Mockito tests for Service and Controller layers.
 * Exception handling and proper HTTP response codes.
 
@@ -88,7 +88,10 @@ mvn clean install
 mvn spring-boot:run
 ```
 
-4. The backend will be available at `http://localhost:8080`
+4. The backend will be available by default at `http://localhost:8080`
+
+But you can set another exposure port in the `application.properties` file via `server.port` and `server.address` properties.
+In this case, make sure to configure the new backend url in the frontend `.env` file to let both communicate.
 
 ---
 
