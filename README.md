@@ -2,7 +2,7 @@
 
 This project is a **Java Spring Boot** backend demonstrating the use of **Hibernate/JPA** for persistence, **Spring Data JPA repositories**, **H2 or MySQL Databases**, and RESTful CRUD endpoints for a `User` entity at the moment.
 This project is solely a sandbox for testing backend/frontend techs, concepts and does not address a specific business need.
-It was started very recently and is a work in progress. A Next Steps section below lists the next developments that would be necessary/good to enhance the application.
+It was started very recently and is a work in progress. A [What's next](#whats-next) section below lists the next developments that would be necessary/good to enhance the application.
 
 It also includes **unit tests and endpoint tests** using JUnit and Mockito.
 
@@ -54,9 +54,9 @@ The frontend is available at : `https://github.com/Kalan8/frontend-demo`
 
 Some possible further features :
 
-* Create your own pets (dog, cat for example)
 * Connect with friends
-* Search people around or with the specific pet
+* Create your own pets (dog, cat for example)
+* Search people around or with a specific pet
 
 ---
 
