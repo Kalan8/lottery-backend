@@ -14,7 +14,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 /**
@@ -47,20 +46,19 @@ class UserServiceTest {
     }
 
     @Test
-    void getUserById_ShouldReturnUser_WhenExists() {
+    void getUserById_OK_ShouldReturnExistingUser() {
         User user = new User("John", "Doe", "john@example.com");
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
 
-        Optional<User> result = userService.getUserById(1L);
+        User result = userService.getUserById(1L);
 
-        assertTrue(result.isPresent());
-        assertThat(result.get().getEmail()).isEqualTo("john@example.com");
+        assertThat(result.getEmail()).isEqualTo("john@example.com");
 
         verify(userRepository, times(1)).findById(1L);
     }
 
     @Test
-    void createUser_ShouldReturnUser() {
+    void createUser_OK_ShouldReturnUser() {
         User user = new User("Jane", "Smith", "jane@example.com");
         when(userRepository.save(user)).thenReturn(user);
 
@@ -72,25 +70,24 @@ class UserServiceTest {
     }
 
     @Test
-    void updateUser_ShouldReturnTheInitialUserUpdated() {
+    void updateUser_OK_ShouldReturnTheInitialUserUpdated() {
         User user1 = new User("John", "Doe", "john@example.com");
         User user2 = new User("Jane", "Smith", "jane@example.com");
         when(userRepository.findById(1L)).thenReturn(Optional.of(user1));
         when(userRepository.save(user1)).thenReturn(user1);
 
-        Optional<User> result = userService.updateUser(1L, user2);
+        User result = userService.updateUser(1L, user2);
 
-        assertTrue(result.isPresent());
-        assertEquals(user2.getName(), result.get().getName());
-        assertEquals(user2.getSurname(), result.get().getSurname());
-        assertEquals(user2.getEmail(), result.get().getEmail());
+        assertEquals(user2.getName(), result.getName());
+        assertEquals(user2.getSurname(), result.getSurname());
+        assertEquals(user2.getEmail(), result.getEmail());
 
         verify(userRepository, times(1)).findById(1L);
         verify(userRepository, times(1)).save(user1);
     }
 
     @Test
-    void deleteUser(){
+    void deleteUser_OK() {
 
         userService.deleteUser(1L);
 

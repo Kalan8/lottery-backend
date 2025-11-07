@@ -1,10 +1,9 @@
 package com.example.hibernatedemo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 /**
  * Represents a user entity within the application.
@@ -34,13 +33,27 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /** The user's given name. */
+    /**
+     * The user's given name.
+     */
+    @NotBlank(message = "Name cannot be blank")
+    @Size(max = 30, message = "Name must be at most 30 characters")
     private String name;
 
-    /** The user's family name (surname). */
+    /**
+     * The user's family name (surname).
+     */
+    @NotBlank(message = "Surname cannot be blank")
+    @Size(max = 30, message = "Name must be at most 30 characters")
     private String surname;
 
-    /** The user's email address. */
+    /**
+     * The user's email address.
+     */
+    @NotBlank(message = "Name cannot be blank")
+    @Size(max = 50, message = "Name must be at most 50 characters")
+    @Email(message = "Email should be valid")
+    @Column(unique = true)
     private String email;
 
     // Constructors

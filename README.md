@@ -4,9 +4,10 @@ This project is a **Java Spring Boot** backend demonstrating the use of **Hibern
 This project is solely a sandbox for testing backend/frontend techs, concepts and does not address a specific business need.
 It was started very recently and is a work in progress. A [What's next](#whats-next) section below lists the next developments that would be necessary/good to enhance the application.
 
-It also includes **unit tests and endpoint tests** using JUnit and Mockito.
+It also includes **unit tests and endpoint tests** using JUnit, Mockito and MockMvc includes in the SpringFramework.
 
-You can interact with this backend app via a Typescript/React frontend which I am also developing in parallel. You can also interact with it via Postman.
+You can interact with this backend app via a Typescript/React frontend which I am also developing in parallel. You can
+also interact with it via Postman.
 The frontend is available at : `https://github.com/Kalan8/frontend-demo`
 
 ---
@@ -19,8 +20,6 @@ The frontend is available at : `https://github.com/Kalan8/frontend-demo`
 * [Getting Started](#getting-started)
 * [Running Tests](#running-tests)
 * [API Endpoints](#api-endpoints)
-
-
 
 ---
 
@@ -40,7 +39,8 @@ The frontend is available at : `https://github.com/Kalan8/frontend-demo`
 ## Features
 
 * Create, read, update, and delete users via REST endpoints.
-* In-memory H2 database for fast development and testing but works also with My SQL database. Dependency commented in pom.xml and configurations commented in application.properties
+* In-memory H2 database for fast development and testing but works also with My SQL database. Dependency commented in
+  pom.xml and configurations commented in application.properties
 * JUnit and Mockito tests for Service and Controller layers.
 * Exception handling and proper HTTP response codes.
 
@@ -49,7 +49,8 @@ The frontend is available at : `https://github.com/Kalan8/frontend-demo`
 ## What's next
 
 * Add a logger to track application behavior, and debug/diagnose issues
-* Add data validations (Name/Surname not empty or malformed email). The frontend app manages these validations but it is also necessary to validate data in the backend side.
+* Add data validations (Name/Surname not empty or malformed email). The frontend app manages these validations but it is
+  also necessary to validate data in the backend side.
 * Add a random user feature
 
 Some possible further features :
@@ -90,7 +91,8 @@ mvn spring-boot:run
 
 4. The backend will be available by default at `http://localhost:8080`
 
-But you can set another exposure port in the `application.properties` file via `server.port` and `server.address` properties.
+But you can set another exposure port in the `application.properties` file via `server.port` and `server.address`
+properties.
 In this case, make sure to configure the new backend url in the frontend `.env` file to let both communicate.
 
 ---
@@ -107,23 +109,31 @@ mvn test
 
 ## API Endpoints
 
-| Method | Endpoint           | Description                     | Request Body     | Response Code |
-|--------|------------------|---------------------------------|-----------------|---------------|
-| GET    | `/api/users`       | Get all users                   | N/A             | 200           |
-| GET    | `/api/users/{id}`  | Get a user by ID                | N/A             | 200 / 404     |
-| POST   | `/api/users`       | Create a new user               | JSON `User`     | 201           |
-| PUT    | `/api/users/{id}`  | Update a user                   | JSON `User`     | 200 / 404     |
-| DELETE | `/api/users/{id}`  | Delete a user                   | N/A             | 204 / 404     |
+| HTTP Method | Endpoint          | Description                    | Request Body (JSON) Example                                                       | Response Status  | Possible Errors                                                     |
+|-------------|-------------------|--------------------------------|-----------------------------------------------------------------------------------|------------------|---------------------------------------------------------------------|
+| **GET**     | `/api/users`      | Retrieve all users             | –                                                                                 | `200 OK`         | `500 Internal Server Error`                                         |
+| **GET**     | `/api/users/{id}` | Retrieve a specific user by ID | –                                                                                 | `200 OK`         | `404 Not Found` if user doesn’t exist                               |
+| **POST**    | `/api/users`      | Create a new user              | ```json { "name": "John", "surname": "Doe", "email": "john.doe@example.com" } ``` | `201 Created`    | `400 Bad Request` (validation error or DB constraint)               |
+| **PUT**     | `/api/users/{id}` | Update an existing user by ID  | ```json { "name": "Jane", "surname": "Doe", "email": "jane.doe@example.com" } ``` | `200 OK`         | `404 Not Found` (user not found) / `400 Bad Request` (invalid data) |
+| **DELETE**  | `/api/users/{id}` | Delete a user by ID            | –                                                                                 | `204 No Content` | `404 Not Found` if user doesn’t exist                               |
 
-Example JSON `User`:
+---
+
+### Error Response Format
+
+All error responses from the backend follow a **uniform JSON structure**:
 
 ```json
 {
-  "name": "John",
-  "surname": "Doe",
-  "email": "john@example.com"
+  "status": 400,
+  "message": "Validation failed",
+  "timestamp": "2025-11-06T15:15:31.0727526",
+  "details": {
+    "name": "Name cannot be blank",
+    "surname": "Surname cannot be blank",
+    "email": "Email should be valid"
+  }
 }
 ```
 
 ---
-

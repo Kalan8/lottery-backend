@@ -1,11 +1,11 @@
 package com.example.hibernatedemo.service;
 
+import com.example.hibernatedemo.exception.UserNotFoundException;
 import com.example.hibernatedemo.model.User;
 import com.example.hibernatedemo.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Service layer responsible for managing {@link User} entities.
@@ -42,10 +42,11 @@ public class UserService {
      * Retrieves a user by their unique identifier.
      *
      * @param id the ID of the user to retrieve
-     * @return an {@link Optional} containing the found {@link User}, or empty if no user exists with the given ID
+     * @return the {@link User}
+     * @throws UserNotFoundException if {@link User} is not found
      */
-    public Optional<User> getUserById(Long id) {
-        return userRepository.findById(id);
+    public User getUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 
     /**
@@ -60,21 +61,18 @@ public class UserService {
 
     /**
      * Updates an existing user with new details.
-     * <p>
-     * If no user exists with the given ID, this method returns an empty {@link Optional}.
-     * </p>
      *
      * @param id          the ID of the user to update
      * @param updatedUser the updated {@link User} data
-     * @return the updated {@link User} instance, or empty {@link Optional} if not found
+     * @return the updated {@link User} instance
+     * @throws UserNotFoundException if {@link User} is not found
      */
-    public Optional<User> updateUser(Long id, User updatedUser) {
-        return userRepository.findById(id).map(user -> {
-            user.setName(updatedUser.getName());
-            user.setSurname(updatedUser.getSurname());
-            user.setEmail(updatedUser.getEmail());
-            return userRepository.save(user);
-        });
+    public User updateUser(Long id, User updatedUser) {
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        user.setName(updatedUser.getName());
+        user.setSurname(updatedUser.getSurname());
+        user.setEmail(updatedUser.getEmail());
+        return userRepository.save(user);
     }
 
     /**
