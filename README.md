@@ -15,7 +15,9 @@ be
 good to do to improve
 the application.
 
-This project was started very recently and is a work in progress but both sides can be running and interact together.
+This project was started very recently and is a work in progress but both sides can be running and interact together. \
+And you can have a look in the [Changelog for Frontend/Backend projects](#changelog-for-frontendbackend-projects)
+section to see more on tasks or improvements already realised in both parts of the app.
 
 This project is mainly a sandbox for testing backend/frontend techs and concepts.
 
@@ -101,7 +103,7 @@ The application could send mail to the registered people to indicate if they hav
 
 ### ⚠️ Notice that these next sections below only concern Backend part
 
-###                               
+###                                 
 
 ## Tech Stack
 
