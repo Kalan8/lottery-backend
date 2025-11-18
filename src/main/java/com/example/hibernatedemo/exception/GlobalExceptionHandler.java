@@ -1,5 +1,7 @@
 package com.example.hibernatedemo.exception;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +22,12 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleAllExceptions(Exception ex) {
 
-        // TODO: Add and manage a proper logger system in the whole application
-        ex.printStackTrace(); // Debug-friendly
+        logger.error("Unexpected error occurred: {}", ex.getMessage(), ex);
 
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
@@ -37,6 +40,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(PlayerNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handlePlayerNotFound(PlayerNotFoundException ex) {
+        logger.error("PlayerNotFoundException occurred: {}", ex.getMessage(), ex);
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("status", HttpStatus.NOT_FOUND.value());
         body.put("message", ex.getMessage());
@@ -48,6 +52,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        logger.error("MethodArgumentNotValidException occurred: {}", ex.getMessage(), ex);
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("status", HttpStatus.BAD_REQUEST.value());
         body.put("message", "Validation failed");
@@ -67,14 +72,12 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<Map<String, Object>> handleDatabaseExceptions(DataIntegrityViolationException ex) {
+        logger.error("DataIntegrityViolationException occurred: {}", ex.getMessage(), ex);
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("status", HttpStatus.CONFLICT.value());
         body.put("message", "Database constraint violation");
         body.put("timestamp", LocalDateTime.now());
         body.put("details", "Database constraint violation");
-
-        //TODO: Add a logger here and log the rootCause message or message like that
-        //log.error("Database constraint violation", ex.getRootCause() != null ? ex.getRootCause().getMessage() : ex.getMessage()));
 
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
