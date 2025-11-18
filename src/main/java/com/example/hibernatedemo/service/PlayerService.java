@@ -3,6 +3,8 @@ package com.example.hibernatedemo.service;
 import com.example.hibernatedemo.exception.PlayerNotFoundException;
 import com.example.hibernatedemo.model.Player;
 import com.example.hibernatedemo.repository.PlayerRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +20,7 @@ import java.util.List;
 @Service
 public class PlayerService {
 
+    private static final Logger logger = LoggerFactory.getLogger(PlayerService.class);
     private final PlayerRepository playerRepository;
 
     /**
@@ -35,6 +38,7 @@ public class PlayerService {
      * @return a {@link List} containing all {@link Player} objects
      */
     public List<Player> getAllPlayers() {
+        logger.info("");
         return playerRepository.findAll();
     }
 
@@ -46,6 +50,7 @@ public class PlayerService {
      * @throws PlayerNotFoundException if {@link Player} is not found
      */
     public Player getPlayerById(Long id) {
+        logger.info("id: {}", id);
         return playerRepository.findById(id).orElseThrow(() -> new PlayerNotFoundException(id));
     }
 
@@ -56,6 +61,7 @@ public class PlayerService {
      * @return the saved {@link Player} instance with a generated ID
      */
     public Player createPlayer(Player player) {
+        logger.info("player data: {}", player.toString());
         return playerRepository.save(player);
     }
 
@@ -68,6 +74,7 @@ public class PlayerService {
      * @throws PlayerNotFoundException if {@link Player} is not found
      */
     public Player updatePlayer(Long id, Player updatedPlayer) {
+        logger.info("id:{} player new data: {}", id, updatedPlayer.toString());
         Player player = playerRepository.findById(id).orElseThrow(() -> new PlayerNotFoundException(id));
         player.setName(updatedPlayer.getName());
         player.setSurname(updatedPlayer.getSurname());
@@ -81,6 +88,7 @@ public class PlayerService {
      * @param id the ID of the player to delete
      */
     public void deletePlayer(Long id) {
+        logger.info("id: {}", id);
         playerRepository.deleteById(id);
     }
 }

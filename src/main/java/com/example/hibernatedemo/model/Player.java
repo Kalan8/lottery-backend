@@ -97,4 +97,9 @@ public class Player {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    @Override
+    public String toString() {
+        return "Player {id=" + id + ", name=" + name + ", surname=" + surname + ", email=" + email + "}";
+    }
 }
