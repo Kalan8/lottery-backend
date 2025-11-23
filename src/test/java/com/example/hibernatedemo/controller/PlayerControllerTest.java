@@ -1,9 +1,11 @@
 package com.example.hibernatedemo.controller;
 
+import com.example.hibernatedemo.exception.NoPlayersAvailableException;
 import com.example.hibernatedemo.exception.PlayerNotFoundException;
 import com.example.hibernatedemo.model.Player;
 import com.example.hibernatedemo.service.PlayerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -187,6 +189,28 @@ class PlayerControllerTest {
                         .content(updatedPlayerJson))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.timestamp").isNotEmpty());
+    }
+
+    @Test
+    void getRandomPlayer_ShouldReturnARandomPlayer() throws Exception {
+
+        when(playerService.getRandomPlayer()).thenReturn(player1);
+
+        mockMvc.perform(get(USERS_ENDPOINT + "/random")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(player1)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("John"))
+                .andExpect(jsonPath("$.surname").value("Doe"));
+    }
+
+    @Test
+    void getRandomPlayer_KO_ShouldReturnARandomPlayer() throws Exception {
+
+        when(playerService.getRandomPlayer()).thenThrow(new NoPlayersAvailableException("No players available"));
+        Assertions.assertThrows(NoPlayersAvailableException.class, () -> {
+            playerService.getRandomPlayer();
+        });
     }
 
 }

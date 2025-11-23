@@ -72,4 +72,12 @@ public class PlayerController {
         logger.info("Successfully returned 204 NO CONTENT for /player/{}", id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/random")
+    public ResponseEntity<Player> getRandomPlayer() {
+        logger.info("Received request to GET /player/random");
+        Player player = playerService.getRandomPlayer();
+        logger.info("Successfully returned 200 OK for /player/random");
+        return ResponseEntity.ok(player);
+    }
 }

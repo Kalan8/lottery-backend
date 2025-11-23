@@ -1,13 +1,17 @@
 package com.example.hibernatedemo.service;
 
+import com.example.hibernatedemo.exception.NoPlayersAvailableException;
 import com.example.hibernatedemo.exception.PlayerNotFoundException;
 import com.example.hibernatedemo.model.Player;
 import com.example.hibernatedemo.repository.PlayerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Service layer responsible for managing {@link Player} entities.
@@ -91,4 +95,18 @@ public class PlayerService {
         logger.info("id: {}", id);
         playerRepository.deleteById(id);
     }
+
+    public Player getRandomPlayer() {
+
+        long count = playerRepository.count();
+        if (count == 0) {
+            throw new NoPlayersAvailableException("No players available");
+
+        }
+
+        int index = ThreadLocalRandom.current().nextInt((int) count);
+        Page<Player> page = playerRepository.findAll(PageRequest.of(index, 1));
+        return page.getContent().get(0);
+    }
+
 }
