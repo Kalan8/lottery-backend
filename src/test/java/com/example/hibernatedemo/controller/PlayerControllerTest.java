@@ -205,7 +205,7 @@ class PlayerControllerTest {
     }
 
     @Test
-    void getRandomPlayer_KO_ShouldReturnARandomPlayer() throws Exception {
+    void getRandomPlayer_KO_ShouldReturnAnNoPlayersAvailableException() throws Exception {
 
         when(playerService.getRandomPlayer()).thenThrow(new NoPlayersAvailableException("No players available"));
         Assertions.assertThrows(NoPlayersAvailableException.class, () -> {
