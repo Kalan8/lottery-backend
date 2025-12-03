@@ -99,11 +99,15 @@ The application could send mail to the registered people to indicate if they hav
 * **[Front]** Create a player page to register and make it as the home page
 * **[Front]** Create a button to redirect into the lottery management page
 * **[Back]** Add a logger to track application behavior, and debug/diagnose issues
+*
+    * **[Front]** Add a Lottery actions section on the administration page
+* **[Back]** / **[Front]** Add a random player feature + a button in the Lottery Actions section
+* **[Front]** Add a button to send email to the winner
 
 ### Tasks coming soon:
 
+* **[Back]** Create logic to send email to the winner
 * **[Front]** Create a button to import multiple players by file in the lottery management page
-* **[Back]** / **[Front]** Add a random player feature
 * **[Back]** Add ability to import a file of players
 * **[Back]** Create json file with data to import in Postman and add it to the repo
 
